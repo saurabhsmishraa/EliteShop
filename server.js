@@ -32,7 +32,7 @@ app.get('/', function (req, res) {
 
 
 
-PORT = process.env.PORT || 3000;
+PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {
     console.log(`Server running at ${process.env.DEV_MODE}mode on port ${PORT}`);
 })
