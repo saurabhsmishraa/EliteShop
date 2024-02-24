@@ -116,8 +116,12 @@ const loginController = async (req, res) => {
     }
 
 }
-
+//test controller
+const testController = (req, res) => {
+    res.send('protected route');
+}
 module.exports = {
     registerController,
-    loginController
+    loginController,
+    testController
 }
