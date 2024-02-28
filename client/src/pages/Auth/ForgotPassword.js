@@ -4,8 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../styles/AuthStyles.css";
-
-const ForgotPasssword = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [answer, setAnswer] = useState("");
@@ -33,8 +32,9 @@ const ForgotPasssword = () => {
             toast.error("Something went wrong");
         }
     };
+
     return (
-        <Layout title={"Forgot Password - Eliteshop APP"}>
+        <Layout title={"Forgot Password - EliteShop"}>
             <div className="form-container ">
                 <form onSubmit={handleSubmit}>
                     <h4 className="title">RESET PASSWORD</h4>
@@ -57,7 +57,7 @@ const ForgotPasssword = () => {
                             onChange={(e) => setAnswer(e.target.value)}
                             className="form-control"
                             id="exampleInputEmail1"
-                            placeholder="Enter Your favorite Brand Name "
+                            placeholder="Enter Your favourite brand ? "
                             required
                         />
                     </div>
@@ -79,8 +79,7 @@ const ForgotPasssword = () => {
                 </form>
             </div>
         </Layout>
-    );
-};
+    )
+}
 
-export default ForgotPasssword;
-
+export default ForgotPassword

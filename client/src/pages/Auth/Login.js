@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import "../../styles/AuthStyles.css";
 import { useAuth } from "../../context/auth";
-
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -40,7 +39,7 @@ const Login = () => {
         }
     };
     return (
-        <Layout title="Register - Eliteshop App">
+        <Layout title="Login - EliteShop">
             <div className="form-container " style={{ minHeight: "90vh" }}>
                 <form onSubmit={handleSubmit}>
                     <h4 className="title">LOGIN FORM</h4>
