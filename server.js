@@ -6,12 +6,14 @@ import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
+import path from "path";
 
 //configure env
 dotenv.config();
 
 //databse config
 connectDB();
+
 
 //rest object
 const app = express();
@@ -30,6 +32,9 @@ app.use("/api/v1/product", productRoutes);
 //rest api
 
 
+app.use('*', function (req, res) {
+    res.sendFile(path.join(__dirname, './client/build/index.html'))
+});
 
 
 app.get("/", (req, res) => {
