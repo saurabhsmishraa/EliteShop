@@ -19,6 +19,8 @@ export const registerController = async (req, res) => {
         }
         if (!phone) {
             return res.send({ message: "Phone no is Required" });
+        } else if (!/^\d{10}$/.test(phone)) { // Phone number validation (10 digits)
+            return res.send({ message: "Phone number should be 10 digits" });
         }
         if (!address) {
             return res.send({ message: "Address is Required" });
@@ -26,13 +28,21 @@ export const registerController = async (req, res) => {
         if (!answer) {
             return res.send({ message: "Answer is Required" });
         }
+
+        var letter = /[a-zA-Z]/;
+        var number = /[0-9]/;
+        var valid = number.test(password) && letter.test(password); //match a letter _and_ a number
+
+        if (!valid) {
+            return res.send({ message: "Password must be alphanumeric" });
+        }
         //check user
-        const exisitingUser = await userModel.findOne({ email });
-        //exisiting user
-        if (exisitingUser) {
+        const existingUser = await userModel.findOne({ email });
+        //existing user
+        if (existingUser) {
             return res.status(200).send({
                 success: false,
-                message: "Already Register please login",
+                message: "Already registered, please login",
             });
         }
         //register user
@@ -49,18 +59,19 @@ export const registerController = async (req, res) => {
 
         res.status(201).send({
             success: true,
-            message: "User Register Successfully",
+            message: "User Registered Successfully",
             user,
         });
     } catch (error) {
         console.log(error);
         res.status(500).send({
             success: false,
-            message: "Errro in Registeration",
+            message: "Error in Register",
             error,
         });
     }
 };
+
 
 //POST LOGIN
 export const loginController = async (req, res) => {
@@ -78,7 +89,7 @@ export const loginController = async (req, res) => {
         if (!user) {
             return res.status(404).send({
                 success: false,
-                message: "Email is not registerd",
+                message: "Email is not registered",
             });
         }
         const match = await comparePassword(password, user.password);
@@ -94,7 +105,7 @@ export const loginController = async (req, res) => {
         });
         res.status(200).send({
             success: true,
-            message: "login successfully",
+            message: "Login successful",
             user: {
                 _id: user._id,
                 name: user.name,
@@ -121,7 +132,7 @@ export const forgotPasswordController = async (req, res) => {
     try {
         const { email, answer, newPassword } = req.body;
         if (!email) {
-            res.status(400).send({ message: "Emai is required" });
+            res.status(400).send({ message: "Email is required" });
         }
         if (!answer) {
             res.status(400).send({ message: "answer is required" });
@@ -129,13 +140,23 @@ export const forgotPasswordController = async (req, res) => {
         if (!newPassword) {
             res.status(400).send({ message: "New Password is required" });
         }
+        if (newPassword.length < 5) {
+            return res.status(400).send({ message: "Password must be at least 5 characters long" });
+        }
+        var letter = /[a-zA-Z]/;
+        var number = /[0-9]/;
+        var valid = number.test(newPassword) && letter.test(newPassword); //match a letter _and_ a number
+
+        if (!valid) {
+            return res.status(400).send({ message: "Password must be alphanumeric" });
+        }
         //check
         const user = await userModel.findOne({ email, answer });
         //validation
         if (!user) {
             return res.status(404).send({
                 success: false,
-                message: "Wrong Email Or Answer",
+                message: "Wrong email or answer",
             });
         }
         const hashed = await hashPassword(newPassword);
@@ -164,15 +185,32 @@ export const testController = (req, res) => {
     }
 };
 
-//update prfole
+//update profile
 export const updateProfileController = async (req, res) => {
     try {
         const { name, email, password, address, phone } = req.body;
         const user = await userModel.findById(req.user._id);
-        //password
-        if (password && password.length < 6) {
-            return res.json({ error: "Passsword is required and 6 character long" });
+
+        // Password validation
+        if (password) {
+            if (password.length < 5) {
+                return res.json({ error: "Password must be at least 5 characters long" });
+            }
+            var letter = /[a-zA-Z]/;
+            var number = /[0-9]/;
+            var valid = number.test(password) && letter.test(password);
+
+            if (!valid) {
+                return res.json({ error: "Password must be alphanumeric" });
+            }
         }
+
+        // Phone number validation
+        if (phone && !/^\d{10}$/.test(phone)) {
+            return res.json({ error: "Phone number should be 10 digits" });
+        }
+
+        // Update user profile
         const hashedPassword = password ? await hashPassword(password) : undefined;
         const updatedUser = await userModel.findByIdAndUpdate(
             req.user._id,
@@ -184,20 +222,22 @@ export const updateProfileController = async (req, res) => {
             },
             { new: true }
         );
+
         res.status(200).send({
             success: true,
-            message: "Profile Updated SUccessfully",
+            message: "Profile Updated Successfully",
             updatedUser,
         });
     } catch (error) {
         console.log(error);
         res.status(400).send({
             success: false,
-            message: "Error WHile Update profile",
+            message: "Error while updating profile",
             error,
         });
     }
 };
+
 
 //orders
 export const getOrdersController = async (req, res) => {
@@ -211,7 +251,7 @@ export const getOrdersController = async (req, res) => {
         console.log(error);
         res.status(500).send({
             success: false,
-            message: "Error WHile Geting Orders",
+            message: "Error while getting orders",
             error,
         });
     }
@@ -229,7 +269,7 @@ export const getAllOrdersController = async (req, res) => {
         console.log(error);
         res.status(500).send({
             success: false,
-            message: "Error WHile Geting Orders",
+            message: "Error while getting orders",
             error,
         });
     }
@@ -250,7 +290,7 @@ export const orderStatusController = async (req, res) => {
         console.log(error);
         res.status(500).send({
             success: false,
-            message: "Error While Updateing Order",
+            message: "Error while updating order",
             error,
         });
     }
