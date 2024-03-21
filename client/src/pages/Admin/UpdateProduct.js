@@ -35,7 +35,7 @@ const UpdateProduct = () => {
             setShipping(data.product.shipping);
             setCategory(data.product.category._id);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     };
     useEffect(() => {
@@ -50,7 +50,7 @@ const UpdateProduct = () => {
                 setCategories(data?.category);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Something went wrong in getting catgeory");
         }
     };
@@ -81,7 +81,7 @@ const UpdateProduct = () => {
                 navigate("/dashboard/admin/products");
             }
         } catch (error) {
-            console.log(error);
+            //  console.log(error);
             toast.error("something went wrong");
         }
     };
@@ -94,11 +94,11 @@ const UpdateProduct = () => {
             const { data } = await axios.delete(
                 `/api/v1/product/delete-product/${id}`
             );
-            console.log(data);
+            //  console.log(data);
             toast.success("Product Deleted Successfully");
             navigate("/dashboard/admin/products");
         } catch (error) {
-            console.log(error);
+            //  console.log(error);
             toast.error("Something went wrong");
         }
     };

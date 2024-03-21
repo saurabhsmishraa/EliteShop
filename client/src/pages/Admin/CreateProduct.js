@@ -26,7 +26,7 @@ const CreateProduct = () => {
                 setCategories(data?.category);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("Something wwent wrong in getting catgeory");
         }
     };
@@ -57,7 +57,7 @@ const CreateProduct = () => {
                 navigate("/dashboard/admin/products");
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             toast.error("something went wrong");
         }
     };

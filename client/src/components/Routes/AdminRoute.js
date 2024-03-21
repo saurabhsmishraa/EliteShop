@@ -14,7 +14,7 @@ export default function AdminRoute() {
                 const res = await axios.get("/api/v1/auth/user-auth");
                 setOk(res.data.ok);
             } catch (error) {
-                console.error("Error checking authentication:", error);
+                // console.error("Error checking authentication:", error);
                 setOk(false);
             }
         };
